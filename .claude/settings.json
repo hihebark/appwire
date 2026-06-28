@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "appwire": {
+      "command": "appwire-mcp",
+      "env": {
+        "APPWIRE_PORT": "23518"
+      }
+    }
+  }
+}

@@ -1,0 +1,156 @@
+---
+title: Appwire — Live App REPL for Node.js
+description: Evaluate code inside your running Node.js app from the terminal. Zero config, IPC-based, works with NestJS and plain Node.
+---
+
+import { Card, CardGrid, Tabs, TabItem } from '@astrojs/starlight/components';
+
+**Run code inside your running app. No restarts. No debug endpoints.**
+
+```
+appwire(ipc:main.ts) > $users = await $app.get(UserService).findAll()
+[{ id: 1, email: 'alice@example.com' }, ...]  18ms
+
+appwire(ipc:main.ts) > $users[0].email
+'alice@example.com'  0ms
+
+appwire(ipc:main.ts) > .timeit 20 await $app.get(PrismaService).user.count()
+42
+  runs: 20  avg: 4ms  min: 3ms  max: 8ms
+
+appwire(ipc:main.ts) > .doc $app.get(AuthService)
+  AuthService
+  Methods:
+    login(dto)
+    logout(userId)
+    validateToken(token)
+```
+
+---
+
+<CardGrid>
+  <Card title="Inspect live state" icon="magnifier">
+    Read env vars, in-memory caches, active connections, and feature flags while the app runs.
+  </Card>
+  <Card title="Call services directly" icon="puzzle">
+    `$app.get(UserService).findAll()` returns the real service instance — no HTTP layer, no test harness.
+  </Card>
+  <Card title="Benchmark in context" icon="rocket">
+    `.timeit 100 expr` times anything against real data with real DI. Numbers reflect production conditions.
+  </Card>
+  <Card title="Save results as variables" icon="pencil">
+    `$x = expr` stores any result for the session. Tab-completes. Listed by `.vars`.
+  </Card>
+</CardGrid>
+
+---
+
+## How it works
+
+Appwire has two parts that meet at an IPC channel:
+
+- **Bootstrap** — a self-contained script injected into your app via `--require`. Opens an IPC channel, sets up a VM context (`$app`, `$env`, `$fetch`, `$reload`, `require`), and intercepts `console.*`.
+- **REPL** — the `appwire` binary connects over IPC, sends code to evaluate, and streams results and logs back.
+
+Your app runs normally. Appwire sits alongside it.
+
+---
+
+## Quickstart
+
+```bash
+npm install -g appwire
+cd your-project
+appwire
+```
+
+Appwire detects your entry point from `package.json`. If it can't:
+
+```bash
+appwire --entry src/main.ts        # explicit file
+appwire --entry apps/backend/      # directory — entry detected inside
+```
+
+Or add a `.appwirerc` to your project root to avoid repeating `--entry`:
+
+```json
+{ "entry": "src/main.ts" }
+```
+
+---
+
+## Framework Adapters
+
+Adapters wire your framework's DI container into `$app`. Without one, you still get `$env`, `$fetch`, and `require`.
+
+<Tabs>
+<TabItem label="NestJS">
+
+```typescript
+// app.module.ts
+
+export class AppModule {}
+```
+
+`$app.get(ServiceName)` resolves any injectable. `.services` lists the full DI container.
+
+</TabItem>
+<TabItem label="Plain Node">
+
+```typescript
+import { startAppwireAgent } from 'appwire'
+
+startAppwireAgent({
+  context: { db, config, redis },
+})
+```
+
+Everything in `context` is available by name in the REPL. `.services` lists the keys.
+
+</TabItem>
+</Tabs>
+
+---
+
+## Session variables
+
+Assign any result to a `$`-prefixed variable — it persists for the rest of the session:
+
+```
+appwire > $users = await $app.get(UserService).findAll()
+[{ id: 1, email: 'alice@example.com' }, ...]  18ms
+
+appwire > $users[0].email
+'alice@example.com'  0ms
+
+appwire > $svc = $app.get(UserService)
+UserService {}  0ms
+
+appwire > $svc.findById(1)
+{ id: 1, email: 'alice@example.com' }  4ms
+```
+
+Variables tab-complete automatically and are listed by `.vars`.
+
+---
+
+## Security
+
+- **Agent only activates under `NODE_ENV=development`.** A no-op in production regardless of how the process starts.
+- **IPC channel is process-local.** Only the parent `appwire` process can send messages. No network exposure.
+
+---
+
+## Learn more
+
+<CardGrid>
+  <Card title="IPC mode" icon="laptop">
+    Entry detection, `.appwirerc`, TypeScript runtimes, auto-reconnect. [→ IPC mode guide](/docs/guides/ipc/)
+  </Card>
+  <Card title="MCP server" icon="setting">
+    Use appwire from Claude Code, Cursor, Zed, or Cline. [→ MCP server guide](/docs/guides/mcp/)
+  </Card>
+  <Card title="CLI reference" icon="list-format">
+    All dot-commands, flags, eval context variables, and session variables. [→ CLI reference](/docs/reference/cli/)
+  </Card>
+</CardGrid>

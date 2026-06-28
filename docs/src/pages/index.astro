@@ -1,0 +1,801 @@
+---
+import '../styles/landing.css'
+---
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Appwire: Live app REPL for Node.js</title>
+  <meta name="description" content="Run code inside your running Node.js app, from the terminal." />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <!-- Nav -->
+  <nav>
+    <div class="nav-inner">
+      <a href="/" class="logo">
+        <svg class="logo-mark" viewBox="400 630 1280 790" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path fill="#34d399" d="M 1243.65 657.404 C 1295.33 649.842 1362.62 676.282 1398.97 713.054 C 1424.94 739.313 1451.55 765.078 1477.78 791.095 L 1534.96 848.34 C 1556.53 870.06 1580.56 892.133 1595.82 918.89 C 1635.01 987.636 1625.58 1073.13 1571.3 1130.88 C 1537.9 1166.71 1491.52 1187.65 1442.56 1189.01 C 1402.11 1190.26 1362.51 1177.32 1330.6 1152.43 C 1314.88 1139.92 1297.34 1121.37 1283.05 1106.93 C 1260.82 1084.09 1238.19 1061.66 1215.16 1039.63 C 1188.58 1064.41 1160.46 1094.17 1134.68 1120.39 C 1084.56 1171.9 1034.12 1223.1 983.383 1274 C 924.533 1332.87 896.866 1377.3 806.265 1389.63 C 768.045 1397.35 709.325 1379.3 677.394 1358.12 C 648.091 1338.69 618.274 1305.41 593.027 1279.98 L 488.574 1174.78 C 447.384 1132.99 428.438 1097.44 428.536 1037.2 C 428.7 936.102 512.864 857.679 612.867 858.916 C 686.68 859.83 727.66 900.953 775.446 950.496 C 793.221 968.925 813.251 986.272 831.231 1004.84 C 853.671 984.358 876.821 959.045 898.542 937.084 L 1059.46 773.093 C 1082.56 749.806 1119.11 709.066 1144.34 692.148 C 1174.09 672.584 1208.19 660.651 1243.65 657.404 z"/>
+          <path fill="#065f46" d="M 1256.36 739.397 C 1320.59 734.098 1356.33 784.721 1396.72 824.801 L 1475.16 902.796 C 1487.38 915.055 1509.36 935.984 1518.7 949.599 C 1528.54 964.126 1534.61 980.884 1536.33 998.351 C 1539.35 1024.64 1531.57 1051.03 1514.77 1071.48 C 1499.33 1090.57 1474.12 1105.43 1449.54 1107.56 C 1396.22 1112.16 1370.83 1080.34 1337.26 1046.63 L 1273.35 981.775 C 1268.06 976.383 1261.26 969.986 1256.48 964.267 C 1207.94 906.275 1170.71 965.622 1133.17 1003.78 L 958.028 1183.52 L 901.472 1242.21 C 865.337 1279.71 848.958 1300.85 793.677 1306.85 C 735.086 1308.62 712.568 1285.07 674.525 1246.77 C 654.741 1227.11 635.105 1207.29 615.618 1187.33 L 562.537 1134.03 C 537.983 1109.26 514.917 1089.39 510.914 1052.38 C 505.271 994.325 543.221 944.344 602.66 940.385 C 657.965 936.701 684.864 974.239 720.407 1009.91 L 782.758 1072.21 C 792.734 1082.31 803.462 1097.55 816.602 1102.81 C 858.146 1119.46 884.35 1069.63 909.337 1043.98 L 1080.21 870.45 C 1114.41 835.152 1152.07 792.567 1190.6 761.37 C 1206.92 748.152 1235.58 741.575 1256.36 739.397 z"/>
+          <circle fill="#34d399" cx="1448.6078" cy="1023.8363" r="50.434036"/>
+          <circle fill="#34d399" cx="602.17352" cy="1023.8363" r="50.434036"/>
+        </svg>
+        <span class="logo-name">appwire</span>
+      </a>
+      <div class="nav-links">
+        <a href="#features" class="nav-link">Features</a>
+        <a href="#mcp" class="nav-link">MCP</a>
+        <a href="#faq" class="nav-link">FAQ</a>
+        <a href="https://github.com/hihebark/appwire" target="_blank" class="nav-link-icon">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844a9.59 9.59 0 0 1 2.504.337c1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0 0 22 12.017C22 6.484 17.522 2 12 2z"/></svg>
+          GitHub
+        </a>
+      </div>
+      <a href={`${import.meta.env.BASE_URL.replace(/\/$/, "")}/docs/`} class="nav-cta">Read the docs →</a>
+    </div>
+  </nav>
+  <div class="nav-mask"></div>
+
+<div class="page-wrap">
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-inner">
+
+      <div class="hero-left">
+        <h1>Inspect your running app.</h1>
+
+        <p class="hero-sub">
+          Run code inside your live app. <code>$app.get(UserService)</code> returns the real instance.
+        </p>
+
+        <div class="hero-install">
+          <span class="hero-install-prompt">$</span>
+          <span class="hero-install-cmd">npm install -g appwire</span>
+        </div>
+      </div>
+
+      <div class="hero-right">
+        <div class="terminal hero-terminal" id="hero-terminal">
+          <div class="terminal-bar">
+            <span class="dot red"></span>
+            <span class="dot yellow"></span>
+            <span class="dot green"></span>
+            <span class="terminal-title">appwire · ipc:main.ts</span>
+          </div>
+          <div class="terminal-body" id="hero-term-body"></div>
+          <input id="hero-term-input" type="text" autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false" aria-label="REPL input" />
+        </div>
+        <div class="hero-term-hint">
+          <span class="hint-label">try:</span>
+          <button class="hint-chip" data-cmd="$app.get(UserService)">$app.get(UserService)</button>
+          <button class="hint-chip" data-cmd="$env.DATABASE_URL">$env.DATABASE_URL</button>
+          <button class="hint-chip" data-cmd=".timeit 20 $app.get(UserService).findAll()">.timeit</button>
+          <button class="hint-chip" data-cmd=".services">.services</button>
+        </div>
+      </div>
+
+    </div>
+    <div class="scroll-hint" aria-hidden="true">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+    </div>
+  </section>
+
+  <!-- Compat bar -->
+  <section class="compat">
+    <div class="compat-inner">
+      <span class="compat-label">works with</span>
+      <div class="compat-logos">
+        <div class="compat-logo compat-nest">
+          <span class="compat-logo-mark">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 100 100" aria-hidden="true"><path fill="#E0234E" fill-rule="evenodd" d="M58.881 0c-.723 0-1.394.155-2.014.361 1.317.878 2.04 2.04 2.402 3.357.025.181.077.31.103.491.026.155.051.31.051.465.104 2.273-.593 2.557-1.084 3.9-.75 1.73-.542 3.59.361 5.087.078.18.181.388.31.568-.981-6.533 4.468-7.515 5.475-9.555.078-1.782-1.394-2.97-2.556-3.796C60.818.206 59.81 0 58.88 0m8.213 1.472c-.104.594-.026.439-.052.749-.026.206-.026.464-.052.671a6 6 0 0 1-.18.62c-.052.206-.13.413-.207.62-.103.206-.18.387-.284.594-.078.103-.13.206-.207.31l-.155.232c-.129.18-.258.362-.387.516-.155.155-.284.336-.465.465v.026c-.155.13-.31.284-.49.413-.543.414-1.163.723-1.73 1.11-.182.13-.362.233-.517.388-.181.13-.336.258-.491.413-.18.155-.31.31-.465.491-.129.155-.284.336-.387.517a7 7 0 0 0-.362.542c-.103.207-.18.387-.284.594-.077.207-.155.387-.206.594-.078.232-.13.439-.181.646-.026.103-.026.232-.052.335s-.026.207-.051.31c0 .207-.026.44-.026.646 0 .155 0 .31.026.465 0 .206.025.413.077.645.026.207.077.413.13.62.077.207.128.413.206.62.051.129.129.258.18.361l-5.94-2.298a64 64 0 0 0-2.995-.775l-1.627-.387a48 48 0 0 0-4.7-.697c-.052 0-.078-.026-.13-.026a46 46 0 0 0-4.622-.233 49 49 0 0 0-3.383.13c-1.575.103-3.15.31-4.726.568-.388.051-.775.129-1.162.206-.8.155-1.576.336-2.325.517l-1.162.31c-.387.154-.749.335-1.11.49l-.852.388c-.052.025-.104.025-.13.051-.258.13-.49.233-.723.362a1 1 0 0 0-.18.077c-.284.13-.569.284-.8.414-.182.077-.363.18-.517.258a3 3 0 0 1-.233.129c-.232.129-.465.258-.671.387q-.35.194-.62.388c-.18.129-.362.232-.517.361-.026.026-.051.026-.077.052a6 6 0 0 0-.49.361l-.052.052-.388.31c-.051.026-.103.077-.155.103-.129.104-.258.233-.387.336-.026.052-.078.077-.103.103-.155.155-.31.284-.465.44-.026 0-.026.025-.052.05-.155.13-.31.285-.465.44-.026.026-.026.052-.051.052-.13.129-.259.258-.388.413-.051.051-.129.103-.18.155a7 7 0 0 1-.44.464c-.025.052-.077.078-.103.13-.206.206-.387.413-.594.62l-.077.077c-.414.439-.853.878-1.317 1.265-.465.414-.956.801-1.447 1.137a20 20 0 0 1-1.55.981q-.774.426-1.626.775a19 19 0 0 1-1.679.62c-1.084.232-2.195.671-3.15.749-.207 0-.44.051-.646.077-.232.052-.44.103-.646.155l-.62.232c-.206.078-.413.181-.62.284-.18.13-.387.233-.567.362a4 4 0 0 0-.517.439c-.18.13-.362.31-.516.465-.155.18-.31.336-.44.516-.129.207-.284.388-.387.594a4.6 4.6 0 0 0-.361.594c-.104.233-.207.44-.284.672-.078.206-.155.439-.233.671a5 5 0 0 0-.129.62c0 .026-.026.052-.026.077-.052.233-.052.543-.077.698-.026.18-.052.335-.052.516 0 .104 0 .233.026.336.026.18.051.336.103.49.052.156.104.31.181.466v.025c.077.155.18.31.284.465s.207.31.336.465c.129.13.284.284.439.413a4 4 0 0 0 .49.414c.62.542.775.723 1.576 1.136.129.077.258.129.413.206.026 0 .052.026.078.026 0 .052 0 .078.025.13.026.206.078.413.13.62.051.232.129.438.206.62.078.154.13.309.207.464.026.052.051.103.077.129.104.207.207.387.31.568l.387.543c.13.154.285.335.44.49.154.155.31.284.49.44 0 0 .026.025.052.025.155.13.31.258.465.362.18.129.361.232.568.335.18.104.387.207.594.285.155.077.335.129.516.18.026.026.052.026.104.052.103.026.232.051.335.077-.077 1.395-.103 2.712.104 3.177.232.516 1.368-1.059 2.505-2.867-.155 1.782-.259 3.874 0 4.494.284.645 1.833-1.369 3.176-3.59 18.31-4.235 35.02 8.42 36.775 26.29-.336-2.789-3.77-4.339-5.346-3.951-.774 1.91-2.091 4.364-4.21 5.888.182-1.705.104-3.46-.257-5.165a16.7 16.7 0 0 1-3.203 6.508c-2.453.18-4.906-1.007-6.198-2.79-.103-.077-.129-.232-.206-.335a5 5 0 0 1-.207-.542 2.2 2.2 0 0 1-.155-.543c-.026-.18-.026-.361-.026-.568v-.387a4 4 0 0 1 .13-.542c.051-.181.103-.362.18-.543.104-.18.18-.361.31-.542.44-1.24.44-2.247-.361-2.84a3 3 0 0 0-.491-.26c-.104-.025-.233-.077-.336-.102-.077-.026-.129-.052-.206-.078-.181-.051-.362-.103-.543-.13a2 2 0 0 0-.542-.077 4 4 0 0 0-.568-.051c-.13 0-.259.026-.388.026-.206 0-.387.026-.568.077-.18.026-.361.052-.542.103-.18.052-.362.104-.543.181-.18.078-.335.155-.516.233-.155.077-.31.18-.49.258-6.018 3.925-2.428 13.12 1.678 15.78-1.55.283-3.125.619-3.564.955l-.052.051a24 24 0 0 0 3.487 1.73 85 85 0 0 0 4.184 1.24v.026q3.214.66 6.507.465c11.441-.8 20.816-9.504 22.52-20.97.052.232.103.439.155.671.078.465.18.956.232 1.447v.025c.052.233.078.465.104.672v.103c.026.233.051.465.051.672.026.284.052.568.052.852v.413c0 .13.026.284.026.413 0 .155-.026.31-.026.465v.362c0 .18-.026.335-.026.516 0 .104 0 .207-.026.336 0 .18-.026.362-.026.568-.026.078-.026.155-.026.233-.025.206-.051.387-.077.594 0 .077 0 .154-.026.232-.026.258-.077.49-.103.749v.052c-.052.232-.104.49-.155.723v.077l-.155.697c0 .026-.026.078-.026.104a7 7 0 0 1-.18.697v.078c-.078.258-.156.49-.207.723-.026.025-.026.051-.026.051l-.233.775c-.103.258-.18.49-.284.749-.103.258-.18.516-.284.749-.103.258-.206.49-.31.749h-.026c-.103.232-.206.49-.335.723-.026.077-.052.13-.078.18-.026.027-.026.052-.051.078-1.679 3.383-4.158 6.353-7.257 8.677-.207.13-.413.285-.62.44-.052.051-.13.077-.18.129-.182.129-.362.258-.569.387l.078.155h.025l1.085-.155h.026a55 55 0 0 0 2.014-.362 5 5 0 0 0 .568-.129c.13-.026.233-.051.362-.077.18-.026.361-.078.542-.103.155-.052.31-.078.465-.13 2.583-.62 5.088-1.472 7.49-2.479a41.36 41.36 0 0 1-16.038 13.094c2.97-.207 5.94-.698 8.806-1.524 10.41-3.074 19.164-10.072 24.406-19.498A41.2 41.2 0 0 1 73.06 95.19a40.7 40.7 0 0 0 6.895-5.733 40.94 40.94 0 0 0 10.873-21.951c.878 4.08 1.136 8.29.749 12.447 18.646-26.005 1.55-52.967-5.604-60.069-.026-.051-.052-.077-.052-.129-.026.026-.026.026-.026.052 0-.026 0-.026-.026-.052 0 .31-.025.62-.051.93a35 35 0 0 1-.258 1.73c-.13.568-.285 1.136-.44 1.704-.18.543-.387 1.111-.62 1.653a22 22 0 0 1-.774 1.576c-.284.49-.594 1.007-.93 1.472-.335.49-.697.955-1.059 1.394-.387.465-.8.878-1.213 1.291-.259.233-.491.44-.75.646-.206.18-.387.336-.593.517-.465.361-.93.697-1.447 1.007-.49.31-1.007.62-1.523.878-.542.258-1.085.49-1.627.723-.543.207-1.11.387-1.679.542-.568.155-1.162.284-1.73.388-.594.103-1.188.155-1.756.206a20 20 0 0 1-1.24.052c-.594 0-1.188-.052-1.756-.103a13 13 0 0 1-1.756-.259 13 13 0 0 1-1.73-.439h-.026a19 19 0 0 0 1.704-.206 19 19 0 0 0 1.73-.388 18 18 0 0 0 1.68-.542 16 16 0 0 0 1.626-.723 18 18 0 0 0 1.55-.852c.49-.336.981-.672 1.446-1.033q.698-.543 1.317-1.163c.439-.387.826-.826 1.214-1.265q.581-.697 1.084-1.395c.052-.077.104-.18.155-.258.259-.413.517-.826.75-1.24a18 18 0 0 0 1.394-3.227c.18-.543.31-1.11.439-1.68.103-.593.207-1.161.258-1.73.052-.593.103-1.187.103-1.756 0-.413-.025-.826-.051-1.24-.052-.593-.13-1.161-.207-1.73a19 19 0 0 0-.387-1.73c-.18-.542-.362-1.11-.568-1.652a18 18 0 0 0-.723-1.602 29 29 0 0 0-.878-1.523 29 29 0 0 0-1.033-1.42c-.388-.44-.775-.879-1.188-1.318-.207-.206-.44-.439-.672-.645a48 48 0 0 0-3.59-2.531 5 5 0 0 0-.516-.259c-.852-.542-1.653-.826-2.453-1.084" clip-rule="evenodd"/></svg>
+          </span>
+          NestJS
+        </div>
+        <span class="compat-sep"></span>
+        <div class="compat-logo compat-node">
+          <span class="compat-logo-mark">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 100 100" aria-hidden="true"><path fill="#8CC84B" d="M46.279 1.067c2.479-1.419 5.709-1.425 8.186 0C66.929 8.11 79.396 15.142 91.858 22.188c2.343 1.32 3.911 3.929 3.887 6.63v42.37c.018 2.813-1.705 5.484-4.178 6.774-12.422 7.004-24.838 14.016-37.259 21.02-2.53 1.447-5.825 1.336-8.277-.23-3.724-2.159-7.455-4.307-11.18-6.464-.76-.454-1.619-.815-2.156-1.553.475-.64 1.324-.72 2.015-1 1.554-.494 2.982-1.287 4.41-2.058.361-.247.802-.152 1.148.07 3.185 1.825 6.342 3.704 9.537 5.513.682.393 1.372-.13 1.955-.454 12.19-6.89 24.396-13.754 36.584-20.645a1.21 1.21 0 0 0 .664-1.192c.009-13.977.002-27.957.005-41.934a1.31 1.31 0 0 0-.781-1.307C75.852 20.756 63.479 13.774 51.102 6.8a1.29 1.29 0 0 0-1.458-.002c-12.378 6.976-24.749 13.965-37.126 20.936-.506.23-.845.738-.785 1.301q.002 20.967 0 41.936a1.19 1.19 0 0 0 .673 1.177c3.303 1.873 6.61 3.733 9.916 5.6 1.861 1.001 4.148 1.597 6.199.829 1.81-.65 3.08-2.497 3.045-4.419.017-13.895-.009-27.793.013-41.687-.046-.617.54-1.126 1.14-1.068 1.586-.011 3.175-.022 4.762.004.663-.015 1.119.65 1.037 1.27-.007 13.984.017 27.968-.01 41.952.003 3.727-1.528 7.782-4.975 9.605-4.247 2.2-9.496 1.734-13.691-.376-3.632-1.812-7.098-3.952-10.666-5.894C6.697 76.681 4.983 74 5 71.19V28.818c-.026-2.757 1.604-5.413 4.021-6.714Q27.651 11.588 46.28 1.067"/><path fill="#8CC84B" d="M57.114 30.418c5.417-.349 11.216-.207 16.091 2.462 3.774 2.045 5.867 6.337 5.933 10.53-.105.566-.696.878-1.236.839-1.572-.002-3.144.021-4.716-.01-.667.025-1.054-.59-1.138-1.18-.451-2.006-1.545-3.993-3.434-4.96-2.898-1.452-6.26-1.379-9.42-1.348-2.308.122-4.79.322-6.744 1.679-1.5 1.028-1.957 3.103-1.421 4.774.505 1.2 1.89 1.587 3.023 1.944 6.529 1.707 13.447 1.537 19.85 3.784 2.651.916 5.245 2.697 6.152 5.473 1.187 3.72.667 8.167-1.98 11.154-2.146 2.458-5.273 3.795-8.39 4.522-4.149.925-8.454.948-12.666.538-3.962-.452-8.084-1.493-11.142-4.192-2.614-2.27-3.892-5.808-3.765-9.222.03-.577.605-.979 1.157-.931 1.583-.013 3.165-.017 4.748.002.632-.046 1.101.5 1.133 1.097.292 1.911 1.01 3.917 2.678 5.05 3.216 2.076 7.253 1.934 10.936 1.992 3.052-.136 6.477-.176 8.967-2.193 1.314-1.15 1.703-3.075 1.348-4.731-.384-1.398-1.847-2.05-3.103-2.475-6.444-2.039-13.44-1.3-19.822-3.605-2.59-.915-5.096-2.647-6.092-5.309-1.389-3.767-.752-8.427 2.172-11.313 2.852-2.87 6.968-3.976 10.881-4.372"/></svg>
+          </span>
+          Node.js
+        </div>
+        <span class="compat-sep"></span>
+        <div class="compat-logo compat-ts">
+          <span class="compat-logo-mark" style="overflow:hidden;padding:0">
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 100 100" aria-hidden="true"><path fill="#017ACB" d="M0 0h100v100H0z"/><path fill="#fff" d="M48.016 37.032h4.797v8.281h-12.97v36.844l-.343.094c-.469.124-6.64.124-7.969-.016l-1.062-.094V45.313H17.5v-8.281l4.11-.047c2.25-.031 8.03-.031 12.843 0s10.906.047 13.563.047m36.61 41.219c-1.907 2.015-3.954 3.14-7.36 4.062-1.485.406-1.735.422-5.078.406s-3.61-.015-5.235-.437c-4.203-1.078-7.594-3.188-9.906-6.172-.656-.844-1.734-2.594-1.734-2.813 0-.062.156-.203.359-.296.203-.094.625-.36.969-.563s.968-.578 1.39-.797 1.64-.937 2.703-1.578c1.063-.64 2.032-1.156 2.141-1.156.11 0 .313.219.469.484.937 1.578 3.125 3.594 4.672 4.281.953.407 3.062.86 4.078.86.937 0 2.656-.406 3.578-.828.984-.453 1.484-.907 2.078-1.813.406-.64.453-.812.438-2.031 0-1.125-.063-1.438-.375-1.953-.875-1.438-2.063-2.188-6.875-4.313-4.97-2.203-7.204-3.515-9.016-5.281-1.344-1.312-1.61-1.672-2.453-3.312-1.094-2.11-1.235-2.797-1.25-5.938-.016-2.203.031-2.922.265-3.672.329-1.125 1.391-3.297 1.875-3.844 1-1.171 1.36-1.53 2.063-2.109 2.125-1.75 5.438-2.906 8.61-3.016.359 0 1.546.063 2.656.141 3.187.266 5.359 1.047 7.453 2.719 1.578 1.25 3.968 4.187 3.734 4.578-.156.234-6.39 4.39-6.797 4.516-.25.078-.422-.016-.765-.422-2.125-2.547-2.985-3.094-5.047-3.22-1.469-.093-2.25.079-3.235.735-1.03.688-1.53 1.735-1.53 3.188.015 2.125.827 3.125 3.827 4.61 1.938.952 3.594 1.733 3.719 1.733.188 0 4.203 2 5.25 2.626 4.875 2.859 6.86 5.796 7.375 10.859.375 3.812-.703 7.297-3.047 9.766"/></svg>
+          </span>
+          TypeScript
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How it works -->
+  <section class="how-it-works">
+    <div class="section-inner">
+      <div class="section-label">Get started</div>
+      <h2>Up and running in three steps.</h2>
+      <div class="hiw-steps">
+        <div class="hiw-step reveal">
+          <div class="hiw-num">01</div>
+          <h3>Install</h3>
+          <p>One global install. No config files, no plugins, no framework changes.</p>
+          <div class="hiw-cmd"><span class="hiw-prompt">$</span> npm install -g appwire</div>
+        </div>
+        <div class="hiw-step reveal">
+          <div class="hiw-num">02</div>
+          <h3>Attach</h3>
+          <p>Run <code>appwire</code> in your project root. Entry point auto-detected, TypeScript runtime resolved, agent injected.</p>
+          <div class="hiw-cmd"><span class="hiw-prompt">$</span> appwire</div>
+        </div>
+        <div class="hiw-step reveal">
+          <div class="hiw-num">03</div>
+          <h3>Evaluate</h3>
+          <p>You're in. Call services, read env vars, query the database. Your app keeps running.</p>
+          <div class="hiw-cmd"><span class="hiw-prompt">&gt;</span> $app.get(UserService)</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- More than just -->
+  <section class="more">
+    <div class="more-inner">
+      <div class="more-header">
+        <div class="section-label">Capabilities</div>
+        <h2>Inspect your app while it runs.</h2>
+        <p class="more-sub">Call services, read env vars, query the database. Your app keeps running.</p>
+      </div>
+      <div class="more-body">
+
+        <div class="more-list">
+          <div class="more-item active" data-feature="0">
+            <div class="more-item-label">Inspect any service</div>
+            <p>Call DI-injected services, query the database, and read env vars from one prompt.</p>
+          </div>
+          <div class="more-item" data-feature="1">
+            <div class="more-item-label">Log streaming</div>
+            <p>console.log output streams inline with your eval results. Logs and return values appear in order, in context.</p>
+          </div>
+          <div class="more-item" data-feature="2">
+            <div class="more-item-label">TypeScript-native</div>
+            <p>Full ts-node and tsx support. Import and evaluate TypeScript directly, against your project's types.</p>
+          </div>
+          <div class="more-item" data-feature="3">
+            <div class="more-item-label">Framework context</div>
+            <p>$app is wired to your NestJS DI container. Resolve any service, repository, or provider in the live app.</p>
+          </div>
+          <div class="more-item" data-feature="4">
+            <div class="more-item-label">Multi-line editor mode</div>
+            <p>Drop into block mode with .editor for multi-statement evals. Write async functions, loops, or conditional logic inline.</p>
+          </div>
+          <div class="more-item" data-feature="5">
+            <div class="more-item-label">Smart serialization</div>
+            <p>Handles undefined, bigint, circular refs, and Errors with stack trimming. Results display correctly across all types.</p>
+          </div>
+        </div>
+
+        <div class="more-terminal-wrap">
+          <div class="terminal">
+            <div class="terminal-bar">
+              <span class="dot red"></span>
+              <span class="dot yellow"></span>
+              <span class="dot green"></span>
+              <span class="terminal-title" id="more-terminal-title">appwire · ipc:main.ts</span>
+            </div>
+            <div class="terminal-body" id="more-terminal-body"></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section class="features" id="features">
+    <div class="section-inner">
+      <div class="section-label">Commands</div>
+      <h2>Zero config. Real data.</h2>
+
+      <div class="feat-grid">
+
+        <div class="feat-cell feat-cell--wide">
+          <div class="feat-wide-text">
+            <svg class="feat-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+            <h3>One command to start</h3>
+            <p>Run <code>appwire</code> from your project root. Entry point auto-detected from <code>package.json</code>, TypeScript runtime resolved from <code>devDependencies</code>, agent injected.</p>
+          </div>
+          <div class="feat-terminal">
+            <div class="ft-line"><span class="ft-prompt">$</span> <span class="ft-cmd">appwire</span></div>
+            <div class="ft-line ft-status">appwire: detected entry src/main.ts (from scripts.start)</div>
+            <div class="ft-line ft-status">appwire: using ts-node for TypeScript</div>
+            <div class="ft-line ft-status">appwire: starting src/main.ts ...</div>
+            <div class="ft-line ft-ready">appwire: app ready (42 services)</div>
+            <div class="ft-line ft-prompt-line"><span class="ft-prompt-ipc">appwire(ipc:main.ts) &gt;</span> <span class="ft-cursor">▊</span></div>
+          </div>
+        </div>
+
+        <div class="feat-cell">
+          <svg class="feat-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          <h3>Benchmark anything</h3>
+          <p>Time any expression N times against your real DI and database. Reports avg, min, and max.</p>
+          <div class="feat-terminal">
+            <div class="ft-line"><span class="ft-prompt">&gt;</span> <span class="ft-cmd">.timeit 100 cache.get('session:1')</span></div>
+            <div class="ft-line ft-out">&#123; userId: 1, role: 'admin' &#125;</div>
+            <div class="ft-line ft-dim">&nbsp;&nbsp;runs: 100&nbsp; avg: 0ms&nbsp; min: 0ms&nbsp; max: 1ms</div>
+          </div>
+        </div>
+
+        <div class="feat-cell">
+          <svg class="feat-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          <h3>Introspect live values</h3>
+          <p><code>.doc</code> shows the class name, every method with its signature, and own properties on any value.</p>
+          <div class="feat-terminal">
+            <div class="ft-line"><span class="ft-prompt">&gt;</span> <span class="ft-cmd">.doc $app.get(AuthService)</span></div>
+            <div class="ft-line ft-class">&nbsp;&nbsp;AuthService</div>
+            <div class="ft-line ft-method">&nbsp;&nbsp;login(dto)&nbsp; logout(userId)</div>
+            <div class="ft-line ft-method">&nbsp;&nbsp;validateToken(token)</div>
+          </div>
+        </div>
+
+      </div>
+      <div class="feat-cta">
+        <a href={`${import.meta.env.BASE_URL.replace(/\/$/, "")}/docs/`} class="nav-cta">Read the docs →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- MCP -->
+  <section class="mcp-section" id="mcp">
+    <div class="section-inner">
+      <div class="section-label">MCP · AI Editors</div>
+      <div class="mcp-grid">
+        <div class="mcp-left">
+          <h2>Give your AI editor a live<br/>window into your app.</h2>
+          <p class="mcp-desc">
+            <code>appwire-mcp</code> spawns your app the same way <code>appwire</code> does. No separate process needed. Claude Code, Cursor, Zed, and Cline can call <code>evaluate</code>, <code>list_services</code>, and <code>ping</code> directly inside your running app.
+          </p>
+          <div class="mcp-tools">
+            <div class="mcp-tool">
+              <span class="mcp-tool-name">evaluate</span>
+              <span class="mcp-tool-desc">Run code in the app's VM context</span>
+            </div>
+            <div class="mcp-tool">
+              <span class="mcp-tool-name">list_services</span>
+              <span class="mcp-tool-desc">List all DI providers</span>
+            </div>
+            <div class="mcp-tool">
+              <span class="mcp-tool-name">ping</span>
+              <span class="mcp-tool-desc">Check agent health</span>
+            </div>
+          </div>
+          <a href={`${import.meta.env.BASE_URL.replace(/\/$/, "")}/docs/guides/mcp`} class="mcp-guide-btn">Read the MCP guide →</a>
+        </div>
+        <div class="mcp-right">
+          <div class="mcp-code-wrap">
+            <div class="mcp-code-label">.claude/settings.json</div>
+            <pre class="mcp-code"><span class="mcp-j-brace">&#123;</span>
+  <span class="mcp-j-key">"mcpServers"</span><span class="mcp-j-punct">: &#123;</span>
+    <span class="mcp-j-key">"appwire"</span><span class="mcp-j-punct">: &#123;</span>
+      <span class="mcp-j-key">"command"</span><span class="mcp-j-punct">: </span><span class="mcp-j-str">"appwire-mcp"</span>
+    <span class="mcp-j-punct">&#125;</span>
+  <span class="mcp-j-punct">&#125;</span>
+<span class="mcp-j-brace">&#125;</span></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Scenarios -->
+  <section class="scenarios">
+    <div class="section-inner">
+      <div class="section-label">Use cases</div>
+      <h2>Reach for appwire when it matters.</h2>
+      <div class="sc-grid">
+        <div class="sc-card reveal">
+          <div class="sc-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          </div>
+          <h3>Debug a production incident</h3>
+          <p>Logs show a 500 but the stack is missing context. Call the failing service, inspect its state, and run the query against live data — without restarting.</p>
+        </div>
+        <div class="sc-card reveal">
+          <div class="sc-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+          </div>
+          <h3>Explore unfamiliar code</h3>
+          <p><code>.services</code> lists every DI provider. <code>.doc</code> shows every method and signature. Call them and see what they return against real data.</p>
+        </div>
+        <div class="sc-card reveal">
+          <div class="sc-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+          </div>
+          <h3>Script against live data</h3>
+          <p>Need to backfill a column or test a migration? Use <code>.editor</code> mode for multi-line TypeScript against your real database — no throwaway script files.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="faq" id="faq">
+    <div class="section-inner">
+      <div class="section-label">FAQ</div>
+      <h2>Common questions.</h2>
+      <div class="faq-list">
+        <div class="faq-item">
+          <button class="faq-q">Does appwire affect my app's performance?</button>
+          <div class="faq-a"><p>No. The bootstrap is injected via <code>--require</code> only when appwire spawns your process. When running normally — in CI, in production, anywhere without appwire — the module is never loaded. Zero overhead.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q">Does it work in production and staging?</button>
+          <div class="faq-a"><p>Yes. <code>APPWIRE=1</code> gates the IPC channel, not <code>NODE_ENV</code>. appwire sets it when it spawns your process, so it works on any environment. The agent binds to <code>127.0.0.1</code> only, never exposed externally.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q">Which Node.js versions are supported?</button>
+          <div class="faq-a"><p>Node.js 18 and above. Works with ts-node, tsx, and plain JavaScript projects.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q">Does it work with Express or Fastify?</button>
+          <div class="faq-a"><p>NestJS is auto-wired with no configuration. For plain Node, Express, or Fastify, call <code>startAppwireAgent()</code> and pass whatever context keys you want available in the REPL.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q">How is appwire different from a Node.js debugger?</button>
+          <div class="faq-a"><p>A debugger pauses execution. appwire runs code <em>alongside</em> your app — it keeps serving requests while you evaluate in a parallel VM context. No breakpoints, no stepping, no pausing.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q">What is the MCP server for?</button>
+          <div class="faq-a"><p><code>appwire-mcp</code> exposes the same capabilities to AI editors — Claude Code, Cursor, Zed, Cline. It spawns your app the same way <code>appwire</code> does and surfaces <code>evaluate</code>, <code>list_services</code>, and <code>ping</code> as MCP tools your AI can call directly.</p></div>
+        </div>
+      </div>
+      <p class="faq-more">Still have questions? <a href="https://github.com/hihebark/appwire/discussions" target="_blank">Ask on GitHub Discussions →</a></p>
+    </div>
+  </section>
+
+  <!-- Modes -->
+  <section class="modes">
+    <div class="section-inner">
+      <div class="mode-grid">
+        <div class="mode-cta">
+          <h2>Get started<br/><span class="gradient-text">in one command.</span></h2>
+          <div class="install-block">
+            <pre><code><span class="dim">$</span> npm install -g appwire</code></pre>
+          </div>
+          <p class="cta-note">MIT license · No signup required</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span class="footer-copy">© 2025 appwire · MIT license</span>
+      <div class="footer-links">
+        <a href={`${import.meta.env.BASE_URL.replace(/\/$/, "")}/docs/`}>Docs</a>
+        <span class="footer-dot">·</span>
+        <a href="https://www.npmjs.com/package/appwire" target="_blank">npm</a>
+        <span class="footer-dot">·</span>
+        <a href="https://github.com/hihebark/appwire" target="_blank">GitHub</a>
+      </div>
+    </div>
+  </footer>
+
+</div><!-- /.page-wrap -->
+
+<script>
+// ── Sticky nav radius ─────────────────────────────────────
+(function() {
+  const nav = document.querySelector('nav');
+  if (!nav) return;
+  const update = () => {
+    const stuck = window.scrollY > 4;
+    document.body.classList.toggle('nav-stuck', stuck);
+  };
+  window.addEventListener('scroll', update, { passive: true });
+  update();
+})();
+
+// ── Hero interactive terminal ──────────────────────────────
+(function() {
+  const terminal = document.getElementById('hero-terminal');
+  const body     = document.getElementById('hero-term-body');
+  const inputEl  = document.getElementById('hero-term-input');
+  if (!terminal) return;
+
+  const MODE = 'ipc:main.ts';
+  let cmdHistory = [], histIdx = -1, busy = false;
+
+  const RESPONSES = [
+    { re: /^\.timeit\s+\d+\s+/,         out: '[ { id: 1, email: \'alice@example.com\' }, { id: 2, email: \'bob@example.com\' }, ... ]\n  runs: 20  avg: 12ms  min: 9ms  max: 18ms', t: 'result' },
+    { re: /^\.timeit/,                   out: '[ { id: 1, email: \'alice@example.com\' }, { id: 2, email: \'bob@example.com\' }, ... ]\n  time: 12ms',        t: 'result' },
+    { re: /^\.doc/,                      out: '  UserService\n  Methods:\n    findAll()\n    findById(id)\n    create(dto)\n  Properties:\n    prisma', t: 'log' },
+    { re: /^\.services/,                 out: '[ UserService, AuthService, OrderService, MailService ]',    t: 'log' },
+    { re: /^\.help/,                     out: '.timeit  .doc  .services  .reload  .editor  .history  .clear  .exit', t: 'log' },
+    { re: /^\.clear/,                    clear: true },
+    { re: /\$app\.get\(UserService\)/,  out: 'UserService { repo: UserRepository, mailer: MailService }', t: 'result', ms: 1 },
+    { re: /\$app\.get\(AuthService\)/,  out: 'AuthService { jwt: JwtService, users: UserService }',       t: 'result', ms: 1 },
+    { re: /\$app\.get\(/,               out: '[ UserService, AuthService, OrderService, MailService ]',    t: 'result', ms: 2 },
+    { re: /\$env\.DATABASE_URL/,        out: "'postgres://localhost/myapp'",                               t: 'string', ms: 0 },
+    { re: /\$env\.NODE_ENV/,            out: "'development'",                                              t: 'string', ms: 0 },
+    { re: /\$env/,                      out: "{ NODE_ENV: 'development', PORT: '3000', DATABASE_URL: '...' }", t: 'result', ms: 0 },
+    { re: /await userService\.findOne/, out: "{ id: 42, name: 'Alice', email: 'alice@example.com' }",     t: 'result', ms: 12 },
+    { re: /await userService\.findAll/, out: "[ { id: 1, name: 'Alice' }, { id: 2, name: 'Bob' }, ... ]", t: 'result', ms: 34 },
+    { re: /await userService\.create/,  out: "{ id: 43, name: 'Bob', role: 'admin', createdAt: '...' }",  t: 'result', ms: 18 },
+    { re: /\$db\.query/,                out: "[{ count: '1842' }]",                                        t: 'result', ms: 6 },
+    { re: /\$db/,                       out: 'DataSource { isConnected: true, driver: PostgresDriver }',   t: 'result', ms: 0 },
+    { re: /new Date\(\)/,               out: new Date().toISOString(),                                     t: 'result', ms: 0 },
+    { re: /process\.version/,           out: "'v22.0.0'",                                                  t: 'string', ms: 0 },
+    { re: /2\s*\+\s*2/,                out: '4',                                                           t: 'result', ms: 0 },
+  ];
+
+  function esc(s) {
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  function el(cls, html) {
+    const d = document.createElement('div');
+    d.className = cls; d.innerHTML = html; return d;
+  }
+
+  function scroll() { body.scrollTop = body.scrollHeight; }
+
+  function newPrompt() {
+    const p = el('terminal-line hero-current-prompt',
+      `<span class="prompt">appwire<span class="prompt-mode">(${MODE})</span> &gt;</span>` +
+      `<span class="code"> <span class="pt-text"></span><span class="cursor">█</span></span>`
+    );
+    body.appendChild(p); scroll(); return p;
+  }
+
+  function getResp(cmd) {
+    const t = cmd.trim();
+    if (!t) return null;
+    for (const r of RESPONSES) if (r.re && r.re.test(t)) return r;
+    if (t.startsWith('.')) return { out: `Unknown command: ${t.split(/\s/)[0]}`, t: 'error' };
+    if (/^(const|let|var|function)\s/.test(t)) return { out: 'undefined', t: 'result', ms: 0 };
+    if (/\bawait\b/.test(t)) return { out: '{ ... }', t: 'result', ms: Math.floor(Math.random() * 80) + 15 };
+    return { out: 'undefined', t: 'result', ms: 0 };
+  }
+
+  const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+  async function runIntro() {
+    // Type "$ appwire" character by character
+    const cmdLine = el('terminal-line', '<span class="bash-prompt">$</span> <span class="bash-cmd"></span>');
+    body.appendChild(cmdLine);
+    const cmdSpan = cmdLine.querySelector('.bash-cmd');
+    await sleep(500);
+    for (const ch of 'appwire') {
+      cmdSpan.textContent += ch;
+      await sleep(130 + Math.random() * 70);
+    }
+    await sleep(350);
+
+    // Startup lines
+    const startupMsgs = [
+      'appwire: detected entry src/main.ts (from package.json)',
+      'appwire: using ts-node for TypeScript',
+      'appwire: starting src/main.ts ...',
+    ];
+    for (const msg of startupMsgs) {
+      body.appendChild(el('terminal-line output', `<span class="startup">${msg}</span>`));
+      await sleep(220);
+    }
+    await sleep(250);
+    body.appendChild(el('terminal-line spacer', ''));
+
+    // Eval session
+    body.appendChild(el('terminal-line',
+      `<span class="prompt">appwire<span class="prompt-mode">(${MODE})</span> &gt;</span><span class="code"> $app.get(UserService)</span>`
+    ));
+    body.appendChild(el('terminal-line output',
+      `<span class="result">UserService { repo: UserRepository }</span><span class="duration">1ms</span>`
+    ));
+    body.appendChild(el('terminal-line spacer', ''));
+    prompt = newPrompt();
+  }
+  let prompt;
+  runIntro();
+
+  terminal.addEventListener('click', () => inputEl.focus());
+  inputEl.addEventListener('focus', () => terminal.classList.add('is-focused'));
+  inputEl.addEventListener('blur',  () => terminal.classList.remove('is-focused'));
+
+  inputEl.addEventListener('input', () => {
+    const pt = prompt.querySelector('.pt-text');
+    if (pt) pt.textContent = inputEl.value;
+  });
+
+  inputEl.addEventListener('keydown', async (e) => {
+    if (busy && e.key !== 'Tab') { e.preventDefault(); return; }
+
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      const cmd = inputEl.value; if (!cmd.trim()) return;
+      cmdHistory.unshift(cmd); histIdx = -1;
+
+      // Freeze prompt line
+      prompt.innerHTML =
+        `<span class="prompt">appwire<span class="prompt-mode">(${MODE})</span> &gt;</span><span class="code"> ${esc(cmd)}</span>`;
+      prompt.classList.remove('hero-current-prompt');
+      inputEl.value = '';
+
+      const resp = getResp(cmd);
+      if (!resp) { body.appendChild(el('terminal-line spacer','')); prompt = newPrompt(); return; }
+
+      busy = true;
+      await new Promise(r => setTimeout(r, Math.max(40, (resp.ms || 0) + 40)));
+
+      if (resp.clear) {
+        body.innerHTML = '';
+      } else {
+        const ms = resp.ms !== undefined ? `<span class="duration">${resp.ms}ms</span>` : '';
+        const map = {
+          result: `<span class="result">${esc(resp.out)}</span>${ms}`,
+          string: `<span class="string">${esc(resp.out)}</span>${ms}`,
+          log:    `<span class="log-line">${esc(resp.out)}</span>`,
+          error:  `<span class="error-text">${esc(resp.out)}</span>`,
+        };
+        body.appendChild(el('terminal-line output', map[resp.t] || map.result));
+        body.appendChild(el('terminal-line spacer', ''));
+      }
+      busy = false;
+      prompt = newPrompt(); scroll();
+    }
+
+    if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      if (histIdx < cmdHistory.length - 1) histIdx++;
+      inputEl.value = cmdHistory[histIdx] || '';
+      const pt = prompt.querySelector('.pt-text');
+      if (pt) pt.textContent = inputEl.value;
+    }
+
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      histIdx = Math.max(-1, histIdx - 1);
+      inputEl.value = histIdx >= 0 ? cmdHistory[histIdx] : '';
+      const pt = prompt.querySelector('.pt-text');
+      if (pt) pt.textContent = inputEl.value;
+    }
+
+    if (e.key === 'c' && e.ctrlKey) {
+      prompt.innerHTML =
+        `<span class="prompt">appwire<span class="prompt-mode">(${MODE})</span> &gt;</span>` +
+        `<span class="code"> ${esc(inputEl.value)}</span><span class="muted" style="color:var(--muted)"> ^C</span>`;
+      prompt.classList.remove('hero-current-prompt');
+      inputEl.value = '';
+      body.appendChild(el('terminal-line spacer', ''));
+      prompt = newPrompt();
+    }
+  });
+
+  document.querySelectorAll('.hint-chip').forEach(chip => {
+    chip.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (busy) return;
+      inputEl.value = chip.dataset.cmd;
+      const pt = prompt.querySelector('.pt-text');
+      if (pt) pt.textContent = chip.dataset.cmd;
+      inputEl.focus();
+    });
+  });
+})();
+</script>
+
+<script>
+const P = (mode, code) =>
+  `<div class="terminal-line"><span class="prompt">appwire<span class="prompt-mode">(${mode})</span> &gt;</span><span class="code"> ${code}</span></div>`;
+const O = (text, ms) =>
+  `<div class="terminal-line output"><span class="result">${text}</span>${ms !== undefined ? `<span class="duration">${ms}ms</span>` : ''}</div>`;
+const S = (text, ms) =>
+  `<div class="terminal-line output"><span class="string">${text}</span>${ms !== undefined ? `<span class="duration">${ms}ms</span>` : ''}</div>`;
+const L = (text) =>
+  `<div class="terminal-line output"><span class="log-line">${text}</span></div>`;
+const SP = () => `<div class="terminal-line spacer"></div>`;
+const C = (mode) =>
+  `<div class="terminal-line"><span class="prompt">appwire<span class="prompt-mode">(${mode})</span> &gt;</span><span class="cursor">█</span></div>`;
+
+const features = [
+  {
+    title: 'appwire · ipc:main.ts',
+    html: [
+      P('ipc:main.ts', '.services'),
+      L('  UserService  AuthService  OrderService  MailService'),
+      SP(),
+      P('ipc:main.ts', '$app.get(OrderService)'),
+      O('OrderService { db: DataSource, queue: BullQueue }', 1),
+      SP(),
+      C('ipc:main.ts'),
+    ].join(''),
+  },
+  {
+    title: 'appwire · ipc:main.ts',
+    html: [
+      P('ipc:main.ts', 'orderService.processOrder(99)'),
+      L('[log] Fetching order #99...'),
+      L('[log] Charging card ending 4242'),
+      L('[log] Queuing confirmation email'),
+      O("{ status: 'completed', total: 149.99 }", 230),
+      SP(),
+      C('ipc:main.ts'),
+    ].join(''),
+  },
+  {
+    title: 'appwire · ipc:main.ts',
+    html: [
+      P('ipc:main.ts', "const dto: CreateUserDto = { name: 'Bob', role: 'admin' }"),
+      O('undefined', 0),
+      SP(),
+      P('ipc:main.ts', 'await userService.create(dto)'),
+      O("{ id: 43, name: 'Bob', role: 'admin', createdAt: 2025-06-15 }", 18),
+      SP(),
+      C('ipc:main.ts'),
+    ].join(''),
+  },
+  {
+    title: 'appwire · ipc:main.ts',
+    html: [
+      P('ipc:main.ts', "await $db.query('SELECT count(*) FROM orders')"),
+      O("[{ count: '8291' }]", 6),
+      SP(),
+      P('ipc:main.ts', '$env.DATABASE_URL'),
+      S("'postgres://db.internal/prod'", 0),
+      SP(),
+      C('ipc:main.ts'),
+    ].join(''),
+  },
+  {
+    title: 'appwire · ipc:main.ts  [editor]',
+    html: [
+      P('ipc:main.ts', '.editor'),
+      L('// Enter multi-line mode (^D to run, ^C to cancel)'),
+      `<div class="terminal-line output"><span class="dim">...</span><span class="code"> const users = await userService.findAll()</span></div>`,
+      `<div class="terminal-line output"><span class="dim">...</span><span class="code"> const admins = users.filter(u =&gt; u.role === 'admin')</span></div>`,
+      `<div class="terminal-line output"><span class="dim">...</span><span class="code"> admins.map(u =&gt; u.email)</span></div>`,
+      O("[ 'alice@example.com', 'carol@example.com' ]", 22),
+      SP(),
+      C('ipc:main.ts'),
+    ].join(''),
+  },
+  {
+    title: 'appwire · ipc:main.ts',
+    html: [
+      P('ipc:main.ts', 'BigInt(9007199254740993)'),
+      O('9007199254740993n', 0),
+      SP(),
+      P('ipc:main.ts', "new Error('db timeout')"),
+      `<div class="terminal-line output"><span class="error-text">Error: db timeout\n  at REPL:1:1\n  at eval (bootstrap:42:18)</span><span class="duration">0ms</span></div>`,
+      SP(),
+      C('ipc:main.ts'),
+    ].join(''),
+  },
+];
+
+const body = document.getElementById('more-terminal-body');
+const titleEl = document.getElementById('more-terminal-title');
+
+const items = Array.from(document.querySelectorAll('.more-item[data-feature]'));
+let current = 0;
+let animTimeouts = [];
+
+function setFeature(idx, animate) {
+  animTimeouts.forEach(clearTimeout);
+  animTimeouts = [];
+  const f = features[idx];
+  body.innerHTML = f.html;
+  titleEl.textContent = f.title;
+  if (!animate) return;
+  const lines = [...body.querySelectorAll('.terminal-line')];
+  lines.forEach(line => { line.style.opacity = '0'; line.style.transform = 'translateY(5px)'; });
+  let delay = 0;
+  lines.forEach(line => {
+    const d = delay;
+    animTimeouts.push(setTimeout(() => {
+      line.style.transition = 'opacity 0.22s ease, transform 0.22s ease';
+      line.style.opacity = '1';
+      line.style.transform = 'none';
+    }, d));
+    if (!line.classList.contains('spacer')) delay += 120;
+  });
+}
+
+const DURATION = 6500;
+
+let activatedAt = Date.now();
+let remainingOnPause = DURATION;
+let hovering = false;
+
+function activate(i, animate) {
+  items.forEach(el => el.classList.remove('active'));
+  items[i].classList.add('active');
+  current = i;
+  activatedAt = Date.now();
+  remainingOnPause = DURATION;
+  setFeature(i, animate);
+}
+
+let autoTimer = null;
+function scheduleAdvance(delay = DURATION) {
+  clearTimeout(autoTimer);
+  if (hovering) return;
+  autoTimer = setTimeout(() => {
+    activate((current + 1) % features.length, true);
+    scheduleAdvance();
+  }, delay);
+}
+
+const moreList = document.querySelector('.more-list');
+moreList.addEventListener('mouseenter', () => {
+  hovering = true;
+  remainingOnPause = DURATION - (Date.now() - activatedAt);
+  clearTimeout(autoTimer);
+});
+moreList.addEventListener('mouseleave', () => {
+  hovering = false;
+  activatedAt = Date.now() - (DURATION - remainingOnPause);
+  scheduleAdvance(Math.max(200, remainingOnPause));
+});
+
+items.forEach((el, i) => {
+  el.addEventListener('click', () => {
+    if (i === current) return;
+    activate(i, true);
+    scheduleAdvance();
+  });
+});
+
+activate(0, false);
+scheduleAdvance();
+
+// ── Scroll reveal ──────────────────────────────────────────
+(function() {
+  const groups = [
+    ['.features h2'],
+    ['.features .feat-cell'],
+    ['.more h2', '.more-sub'],
+    ['.more-list', '.more-terminal-wrap'],
+    ['.modes h2'],
+    ['.mode-card'],
+    ['.cta h2', '.cta-row'],
+  ];
+
+  groups.forEach((selectors, gi) => {
+    selectors.forEach((sel, si) => {
+      document.querySelectorAll(sel).forEach((el, ei) => {
+        el.classList.add('reveal');
+        el.style.transitionDelay = `${(gi * 0 + si * 80 + ei * 80)}ms`;
+      });
+    });
+  });
+
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
+
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+})();
+
+</script>
+
+<script>
+document.querySelectorAll('.faq-q').forEach(btn => {
+  btn.addEventListener('click', () => {
+    btn.closest('.faq-item').classList.toggle('open');
+  });
+});
+</script>
+
+</body>
+</html>
